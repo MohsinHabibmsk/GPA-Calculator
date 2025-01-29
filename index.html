@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> GPA Calculator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background: linear-gradient(135deg, #0f172a, #1e293b);
+            color: #e2e8f0;
+            font-family: Arial, sans-serif;
+        }
+        .glass {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 20px;
+        }
+        @media (max-width: 640px) {
+            .glass {
+                width: 90%;
+                padding: 15px;
+            }
+            .flex {
+                flex-direction: column;
+                gap: 8px;
+            }
+            .w-1/2, .w-1/4 {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body class="flex justify-center items-center min-h-screen">
+    <div class="glass w-full max-w-2xl p-6 shadow-lg">
+        <h2 class="text-2xl font-bold text-center mb-4"> GPA Calculator</h2>
+        <div id="courses" class="space-y-4">
+            <div class="flex space-x-2">
+                <input type="text" placeholder="Course Name" class="w-1/2 p-2 rounded bg-gray-800 text-white">
+                <select class="w-1/4 p-2 rounded bg-gray-800 text-white">
+                    <option value="4.0">A</option>
+                    <option value="3.75">A-</option>
+                    <option value="3.5">B+</option>
+                    <option value="3.0">B</option>
+                    <option value="2.75">B-</option>
+                    <option value="2.5">C+</option>
+                    <option value="2.0">C</option>
+                    <option value="1.5">C-</option>
+                    <option value="1.0">D</option>
+                    <option value="0.0">F</option>
+                </select>
+                <input type="number" placeholder="Credits" class="w-1/4 p-2 rounded bg-gray-800 text-white">
+            </div>
+        </div>
+        <button onclick="addCourse()" class="mt-4 w-full bg-blue-600 hover:bg-blue-700 p-2 rounded">Add Course</button>
+        <button onclick="calculateGPA()" class="mt-2 w-full bg-green-600 hover:bg-green-700 p-2 rounded">Calculate GPA</button>
+        <h3 class="text-xl font-semibold text-center mt-4">GPA: <span id="gpa">0.00</span></h3>
+    </div>
+
+    <script>
+        function addCourse() {
+            const courseDiv = document.createElement('div');
+            courseDiv.classList.add('flex', 'space-x-2');
+            courseDiv.innerHTML = `
+                <input type="text" placeholder="Course Name" class="w-1/2 p-2 rounded bg-gray-800 text-white">
+                <select class="w-1/4 p-2 rounded bg-gray-800 text-white">
+                    <option value="4.0">A</option>
+                    <option value="3.75">A-</option>
+                    <option value="3.5">B+</option>
+                    <option value="3.0">B</option>
+                    <option value="2.75">B-</option>
+                    <option value="2.5">C+</option>
+                    <option value="2.0">C</option>
+                    <option value="1.75">C-</option>
+                    <option value="1.0">D</option>
+                    <option value="0.0">F</option>
+                </select>
+                <input type="number" placeholder="Credits" class="w-1/4 p-2 rounded bg-gray-800 text-white">
+            `;
+            document.getElementById('courses').appendChild(courseDiv);
+        }
+
+        function calculateGPA() {
+            let totalPoints = 0, totalCredits = 0;
+            document.querySelectorAll('#courses > div').forEach(row => {
+                let grade = parseFloat(row.children[1].value) || 0;
+                let credits = parseFloat(row.children[2].value) || 0;
+                totalPoints += grade * credits;
+                totalCredits += credits;
+            });
+            document.getElementById('gpa').innerText = totalCredits ? (totalPoints / totalCredits).toFixed(2) : '0.00';
+        }
+    </script>
+</body>
+</html>
